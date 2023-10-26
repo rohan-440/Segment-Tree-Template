@@ -1,0 +1,48 @@
+class SGT{
+  public:
+  vector<int>seg;
+  SGT(n){
+    seq.resize(4*n);
+  }
+
+  void build(int i , int low , int high){
+    if(low == high){
+      seg[i] = a[low];
+      return ;
+    }
+    int mid = (low+high)/2;
+    build(2*i+1,low,mid);
+    build(2*i+2,mid+1,high);
+    seg[i] = min(seg[2*i+1],seg[2*i+2]);
+  }
+  void query(int i , int low , int high , int l , int r){
+   //no overlap
+    if(high < l || low < r){
+      return INT_MAX;   // change according to need;
+    }
+    //complete overlap
+    if(low > l && high > r){
+      return seg[i];
+    }
+    //partial overlap
+    int mid = (low+high)/2;
+    query(2*i+1,low,mid,l,r);
+    query(2*i+2,mid+1,high,1,r);
+    seg[i] = min(seg[2*i+1],seg[2*i+2]);
+  }
+  void update(int i , int low , int high ,int ind,int val){
+    if(low == high){
+      seg[ind] = val;
+      return ;
+    }
+    int mid = (low+mid)/2;
+    if(ind <= mid){
+    update(2*i+1,low,mid,ind,val);
+    }
+    else {
+    update(2*i+2,mid+1,high,val);
+    }
+    seg[ind] = min(seg[2*i+1],seg[2*i+2]);
+
+  }
+};
